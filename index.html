@@ -1,0 +1,543 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>わくわくPython入門</title>
+  <meta name="description" content="このサイトは、Pythonの基礎からオブジェクト指向やミニプロジェクトまで、コードの行ごとに丁寧な解説を付けて学べる点が魅力です。白を基調としたシンプルで見やすいデザインと、コピー可能なコードブロックで実践的に学習できるのも大きな特徴です。" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=JetBrains+Mono:wght@300;400;600&display=swap');
+
+    :root{
+      --accent-blue: #cfeefe; /* 薄い青 */
+      --accent-deep: #0c5b7a; /* アクセント深め */
+      --muted: #6b8596;
+      --card: #ffffff;
+      --code-bg: #0b1320;
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%}
+
+    /* 全体（白ベース） */
+    body{
+      font-family: 'Noto Sans JP', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+      background: #ffffff; /* メインは白 */
+      color: #000000; /* 文字は黒 */
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      min-height:100vh;
+      padding: 2rem 1rem;
+    }
+
+    /* 概要ヘッダー */
+    .overview-header {
+      max-width: 1300px;
+      margin: 0 auto 2rem auto;
+    }
+    .overview-header .header {
+      margin-bottom: 0;
+    }
+
+    /* レイアウト */
+    .container{display:flex;max-width:1300px;margin:0 auto;gap:2rem;align-items:flex-start}
+
+    /* サイドバー：白基調＋薄青の左境界/アクセント */
+    .sidebar{
+      width:300px;padding:1.6rem;background:var(--card);border:1px solid rgba(12,91,122,0.06);border-left:6px solid var(--accent-blue);position:sticky;top:1.2rem;
+      max-height:calc(100vh - 2.4rem);overflow:auto;border-radius:8px;box-shadow:0 6px 20px rgba(0,0,0,0.03);
+    }
+    .sidebar h2{font-size:1.1rem;color:var(--accent-deep);margin-bottom:.3rem;font-weight:700}
+    .sidebar .small{font-size:.92rem;color:var(--muted);margin-bottom:0.8rem}
+    .nav-menu{list-style:none;padding-left:0}
+    .nav-menu a{display:block;padding:.5rem 0;color:#0b3b50;text-decoration:none;border-radius:4px;padding-left:0.4rem}
+    .nav-menu a:hover{background:var(--accent-blue)}
+    .nav-menu a.active{color:var(--accent-deep);font-weight:700;background:rgba(12,91,122,0.04)}
+
+    /* メイン */
+    main{flex:1}
+    .content-inner{max-width:920px;margin:0 auto}
+    .header{margin-bottom:1.2rem}
+    .page-title{font-size:1.8rem;color:var(--accent-deep);margin-bottom:.2rem;font-weight:700}
+    .lead{background:linear-gradient(180deg, rgba(207,238,254,0.35), rgba(207,238,254,0.06));padding:0.9rem;border-radius:8px;margin-top:0.6rem;border:1px solid rgba(12,91,122,0.06)}
+
+    /* セクション */
+    .section{margin-bottom:2rem}
+    .section-title{font-size:1.15rem;color:var(--accent-deep);margin-bottom:.6rem;font-weight:700}
+    .card{background:var(--card);padding:1rem;border-radius:8px;box-shadow:0 6px 18px rgba(0,0,0,0.03);border:1px solid rgba(12,91,122,0.05)}
+    .explain{margin-top:0.7rem;color:#073347;font-size:0.98rem;line-height:1.7}
+    .hint{margin-top:0.6rem;color:var(--muted);font-size:0.92rem}
+
+    /* コード */
+    details.explain{margin-top:0.6rem}
+details.explain summary{font-weight:600;cursor:pointer;padding:0.45rem;border-radius:6px;background:transparent}
+details.explain[open] summary{background:rgba(12,91,122,0.04)}
+details.explain p{margin-top:0.5rem;color:#073347;line-height:1.6}
+
+    .code{background:var(--code-bg);color:#ffffff;padding:1rem;border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:0.95rem;white-space:pre;overflow:auto;border:1px solid rgba(255,255,255,0.03)}
+    .code + .explain{margin-top:0.8rem}
+
+    /* コピーボタン */
+    .copy-btn{background:var(--accent-deep);color:#fff;border:none;padding:.45rem .6rem;border-radius:6px;cursor:pointer}
+
+    /* 視認性のための小要素 */
+    .note{font-size:0.95rem;color:#173147;margin-top:0.6rem}
+
+    /* レスポンシブ */
+    @media (max-width: 1024px){
+      .container{flex-direction:column}
+      .sidebar{width:100%;position:relative;border-left:6px solid var(--accent-blue);border-radius:8px;margin-bottom:1rem}
+      .content-inner{padding:0}
+    }
+
+  </style>
+</head>
+<body>
+  <!-- 概要ヘッダー（独立配置） -->
+  <div class="overview-header">
+    <header id="overview" class="header">
+      <h1 class="page-title">🐍 わくわくPython入門</h1>
+      <div class="lead card">
+        <p class="note">このサイトは、Pythonの基礎からオブジェクト指向やミニプロジェクトまで、コードの行ごとに丁寧な解説を付けて学べる点が魅力です。<br>白を基調としたシンプルで見やすいデザインと、コピー可能なコードブロックで実践的に学習できるのも大きな特徴です。</p>
+      </div>
+    </header>
+  </div>
+
+  <div class="container">
+    <aside class="sidebar" aria-label="目次">
+      <h2>目次</h2>
+      <nav>
+        <ul class="nav-menu" id="toc">
+          <li><a href="#overview">概要</a></li>
+          <li><a href="#print">print と 型</a></li>
+          <li><a href="#variables">変数と代入</a></li>
+          <li><a href="#io">入力と出力</a></li>
+          <li><a href="#operators">演算・比較・論理</a></li>
+          <li><a href="#control">条件分岐とループ</a></li>
+          <li><a href="#functions">関数（詳解）</a></li>
+          <li><a href="#collections">コレクション</a></li>
+          <li><a href="#modules">モジュール</a></li>
+          <li><a href="#fileio">ファイル入出力</a></li>
+          <li><a href="#oop">オブジェクト指向</a></li>
+          <li><a href="#mini-project">ミニプロジェクト</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <main>
+      <div class="content-inner">
+        <!-- print -->
+        <section id="print" class="section">
+          <h2 class="section-title">print と 型</h2>
+          <div class="card">
+            <pre class="code" id="code-print"># 文字列
+print("こんにちは")
+
+# 数字（整数・小数）
+print(10)
+print(3.14)
+
+# ブール値
+print(True, False)
+
+# 型の確認
+print(type("abc"), type(10), type(3.14), type(True))</pre>
+
+            <details class="explain"><summary>詳しい行単位解説（クリックで展開）</summary>
+            <div class="explain">
+              <strong>行ごとの解説</strong>
+              <ol>
+                <li><code>print("こんにちは")</code>：画面に文字列（"こんにちは"）を表示します。文字列はシングルかダブルクオートで囲みます。</li>
+                <li><code>print(10)</code>：整数 10 を表示します。数値はクォートで囲みません。</li>
+                <li><code>print(3.14)</code>：浮動小数点数（小数）を表示します。</li>
+                <li><code>print(True, False)</code>：複数の値をカンマで区切って渡すとスペースで区切って表示されます。ここではブール値を表示。</li>
+                <li><code>print(type(...))</code>：<code>type()</code> はオブジェクトの型を返し、デバッグや確認に使います。</li>
+              </ol>
+              <p class="hint">よくある間違い: 文字列と数値を混ぜて演算しようとするとエラーになります（例: <code>"10" + 5</code>）。数値に変換するには <code>int("10")</code> を使います。</p>
+            </div></details>
+            <div style="margin-top:0.8rem"><button class="copy-btn" data-target="code-print">コードをコピー</button></div>
+          </div>
+        </section>
+
+        <!-- variables -->
+        <section id="variables" class="section">
+          <h2 class="section-title">変数と代入</h2>
+          <div class="card">
+            <pre class="code" id="code-vars"># 代入
+x = 10
+name = "Toma"
+pi = 3.14159
+flag = True
+
+print(x, name, pi, flag)
+
+# 複数代入
+a, b = 1, 2
+print(a, b)
+
+# 値の更新
+x = x + 5  # 古典的
+x += 5     # 便利な短縮形
+print(x)</pre>
+
+            <details class="explain"><summary>詳しい行単位解説（クリックで展開）</summary>
+            <div class="explain">
+              <strong>行ごとの解説</strong>
+              <ol>
+                <li><code>x = 10</code>：変数 <code>x</code> に整数 10 を代入。左が変数名、右が値です。</li>
+                <li><code>name = "Toma"</code>：文字列を代入。</li>
+                <li><code>pi = 3.14159</code>：浮動小数点を代入。</li>
+                <li><code>flag = True</code>：ブール値を代入。</li>
+                <li><code>print(x, name, ...)</code>：複数の変数を一度に表示（カンマで区切ると自動でスペースが入る）。</li>
+                <li><code>a, b = 1, 2</code>：複数代入。右側の値が左側の変数へ順に代入されます。</li>
+                <li><code>x = x + 5</code>：現在の <code>x</code> に 5 を足して再代入。</li>
+                <li><code>x += 5</code>：上の操作の省略形（インプレース演算子）。</li>
+              </ol>
+              <p class="hint">ポイント: 変数名は意味が分かるものにしましょう。数字で始めない、予約語を避ける、といった基本ルールを守ると読みやすくなります。</p>
+            </div></details>
+            <div style="margin-top:0.8rem"><button class="copy-btn" data-target="code-vars">コードをコピー</button></div>
+          </div>
+        </section>
+
+        <!-- io -->
+        <section id="io" class="section">
+          <h2 class="section-title">入力と出力</h2>
+          <div class="card">
+            <pre class="code" id="code-io">name = input("名前を入力してください: ")
+age_str = input("年齢を入力してください: ")
+# 入力は常に文字列なので数値に変換する
+age = int(age_str)
+
+print(f"こんにちは、{name} さん。{age}歳ですね。")</pre>
+
+            <details class="explain"><summary>詳しい行単位解説（クリックで展開）</summary>
+            <div class="explain">
+              <strong>行ごとの解説</strong>
+              <ol>
+                <li><code>name = input("...")</code>：プロンプトを出してユーザーの入力を受け取り、文字列として <code>name</code> に保存します。</li>
+                <li><code>age_str = input("...")</code>：同様に入力を文字列として受け取ります。注意：<code>input()</code> は常に文字列を返します。</li>
+                <li><code>age = int(age_str)</code>：文字列を整数に変換します。ユーザーが数値以外を入力すると例外（ValueError）が発生するので通常は try/except で保護します。</li>
+                <li><code>print(f"...")</code>：f-string を使って変数を文字列内に埋め込み、整形して表示します。</li>
+              </ol>
+              <p class="hint">実務上の注意：ユーザー入力は信頼できないデータです。必ず検証とエラーハンドリングを行ってください。</p>
+            </div></details>
+            <div style="margin-top:0.8rem"><button class="copy-btn" data-target="code-io">コードをコピー</button></div>
+          </div>
+        </section>
+
+        <!-- operators -->
+        <section id="operators" class="section">
+          <h2 class="section-title">演算・比較・論理</h2>
+          <div class="card">
+            <pre class="code" id="code-op"># 四則演算
+print(5 + 3, 5 - 3, 5 * 3, 5 / 2, 5 // 2, 5 % 2, 2 ** 3)
+
+# 比較
+print(5 > 3, 5 == 4, 5 != 4)
+
+# 論理演算
+print(True and False, True or False, not True)</pre>
+
+            <details class="explain"><summary>詳しい行単位解説（クリックで展開）</summary>
+            <div class="explain">
+              <strong>行ごとの解説</strong>
+              <ol>
+                <li><code>+</code>, <code>-</code>, <code>*</code>：加算・減算・乗算。</li>
+                <li><code>/</code>：除算。結果は常に浮動小数点（2/1 -> 2.0）。</li>
+                <li><code>//</code>：整数除算（切り捨て）。</li>
+                <li><code>%</code>：剰余（余り）。</li>
+                <li><code>**</code>：べき乗。</li>
+                <li>比較演算（<code>==</code> など）は真偽値を返し、論理演算（<code>and</code>, <code>or</code>, <code>not</code>）で複合条件を扱います。</li>
+              </ol>
+            </div></details>
+            <div style="margin-top:0.8rem"><button class="copy-btn" data-target="code-op">コードをコピー</button></div>
+          </div>
+        </section>
+
+        <!-- control -->
+<section id="control" class="section">
+  <h2 class="section-title">条件分岐とループ</h2>
+  <div class="card">
+    <!-- 条件分岐 -->
+    <pre class="code" id="code-if"># if / elif / else
+x = 10
+if x > 0:
+    print("正の数")
+elif x == 0:
+    print("ゼロ")
+else:
+    print("負の数")</pre>
+
+    <details class="explain"><summary>詳しい行単位解説（クリックで展開）</summary>
+      <div class="explain">
+        <strong>行ごとの解説</strong>
+        <ol>
+          <li><code>x = 10</code>：変数に値を代入。</li>
+          <li><code>if x &gt; 0:</code>：条件が True のときに次のインデント行を実行します。条件にはコロンが必要です。</li>
+          <li>Python ではインデント（スペース）でブロックを表します。一般にスペース4つを推奨します。</li>
+          <li><code>elif</code> は "それ以外でさらに条件"、<code>else</code> はどれにも当てはまらない場合に実行されます。</li>
+        </ol>
+      </div>
+    </details>
+
+    <div style="margin-top:0.8rem">
+      <button class="copy-btn" data-target="code-if">コードをコピー</button>
+    </div>
+
+    <!-- ループ -->
+    <pre class="code" id="code-loop" style="margin-top:0.8rem"># for ループ
+for i in range(5):
+    print(i)  # 0 1 2 3 4
+
+# while ループ
+n = 5
+while n > 0:
+    print(n)
+    n -= 1</pre>
+
+    <details class="explain"><summary>詳しい行単位解説（クリックで展開）</summary>
+      <div class="explain">
+        <ol>
+          <li><code>for i in range(5):</code>：0 から 4 まで順に i に代入してループします。</li>
+          <li><code>while n &gt; 0:</code>：条件が True の間ループが続きます。条件を変化させないと無限ループになります。</li>
+          <li><code>n -= 1</code>：<code>n = n - 1</code> の短縮形。ループを終わらせるために使います。</li>
+        </ol>
+      </div>
+    </details>
+
+    <div style="margin-top:0.8rem">
+      <button class="copy-btn" data-target="code-loop">コードをコピー</button>
+    </div>
+  </div>
+</section>
+
+
+        <!-- functions -->
+        <section id="functions" class="section">
+          <h2 class="section-title">関数（詳細）</h2>
+          <div class="card">
+            <pre class="code" id="code-func">def greet(name):
+    """引数 name を受け取り挨拶文を返す関数"""
+    return f"こんにちは、{name}さん！"
+
+print(greet("Toma"))
+
+# デフォルト引数、キーワード引数
+def add(a, b=10):
+    return a + b
+
+print(add(5), add(5, b=2))</pre>
+
+            <details class="explain"><summary>詳しい行単位解説（クリックで展開）</summary>
+            <div class="explain">
+              <strong>行ごとの解説</strong>
+              <ol>
+                <li><code>def greet(name):</code>：関数の定義を開始します。<code>def</code> の後に関数名と引数を記述し、最後にコロンを置きます。</li>
+                <li><code>"""..."""</code>：docstring（説明文）。関数の目的や引数、戻り値を記述しておくと後で便利です。</li>
+                <li><code>return ...</code>：呼び出し元に値を返します。ここでは文字列を返しています。</li>
+                <li><code>print(greet("Toma"))</code>：関数を呼び出し、返り値を表示します。</li>
+                <li><code>def add(a, b=10):</code>：引数 <code>b</code> にデフォルト値を与えた例。呼び出し時に省略可能です。</li>
+                <li>キーワード引数（<code>add(5, b=2)</code>）で引数名を指定して渡すと可読性が上がります。</li>
+              </ol>
+              <p class="hint">注意: 関数内でグローバル変数を直接書き換えると副作用が発生しやすく、バグの原因になります。可能な限り引数と戻り値でデータを受け渡しましょう。</p>
+            </div></details>
+            <div style="margin-top:0.8rem"><button class="copy-btn" data-target="code-func">コードをコピー</button></div>
+          </div>
+        </section>
+
+        <!-- collections -->
+        <section id="collections" class="section">
+          <h2 class="section-title">リスト・タプル・辞書・集合</h2>
+          <div class="card">
+            <pre class="code" id="code-list"># リスト: 変更可 (mutable)
+fruits = ["apple", "banana", "cherry"]
+fruits.append("orange")
+print(fruits)
+
+# タプル: 変更不可 (immutable)
+coords = (10, 20)
+print(coords)
+
+# 辞書: key -> value
+person = {"name":"Toma", "age":18}
+print(person["name"])  # Toma
+
+# 集合: 重複を排除
+s = {1,2,2,3}
+print(s)</pre>
+
+            <details class="explain"><summary>詳しい行単位解説（クリックで展開）</summary>
+            <div class="explain">
+              <strong>行ごとの解説</strong>
+              <ol>
+                <li><code>fruits = [...]</code>：角括弧でリストを作成します。要素の追加・削除ができます。</li>
+                <li><code>fruits.append(...)</code>：リストの末尾に要素を追加します。</li>
+                <li><code>coords = (10,20)</code>：丸括弧でタプルを作成。変更不可なので不変データに向いています。</li>
+                <li><code>person = {...}</code>：辞書はキーと値の対応。キーで高速に値を取り出せます。</li>
+                <li><code>s = {1,2,2,3}</code>：集合は重複を自動で排除します。</li>
+              </ol>
+            </div></details>
+            <div style="margin-top:0.8rem"><button class="copy-btn" data-target="code-list">コードをコピー</button></div>
+          </div>
+        </section>
+
+        <!-- modules -->
+        <section id="modules" class="section">
+          <h2 class="section-title">モジュールと標準ライブラリ</h2>
+          <div class="card">
+            <pre class="code" id="code-math">import math
+print(math.pi)
+print(math.sqrt(16))
+
+import random
+print(random.randint(1, 10))</pre>
+
+            <details class="explain"><summary>詳しい行単位解説（クリックで展開）</summary>
+            <div class="explain">
+              <ol>
+                <li><code>import math</code>：math モジュールを読み込みます。モジュール名をプレフィックスにして中の要素にアクセスします。</li>
+                <li><code>math.pi</code>：円周率の定数。</li>
+                <li><code>math.sqrt(16)</code>：平方根を計算。</li>
+                <li><code>import random</code>：乱数モジュールの読み込み。</li>
+                <li><code>random.randint(1,10)</code>：1〜10 のランダム整数を返します。</li>
+              </ol>
+              <p class="hint">補足: <code>from math import sqrt</code> のようにすると関数を直接呼び出せますが、名前衝突に注意してください。</p>
+            </div></details>
+            <div style="margin-top:0.8rem"><button class="copy-btn" data-target="code-math">コードをコピー</button></div>
+          </div>
+        </section>
+
+        <!-- fileio -->
+        <section id="fileio" class="section">
+          <h2 class="section-title">ファイル入出力</h2>
+          <div class="card">
+            <pre class="code" id="code-file"># 書き込み
+with open('sample.txt', 'w', encoding='utf-8') as f:
+    f.write('こんにちは
+')
+
+# 読み込み
+with open('sample.txt', 'r', encoding='utf-8') as f:
+    text = f.read()
+print(text)</pre>
+
+            <details class="explain"><summary>詳しい行単位解説（クリックで展開）</summary>
+            <div class="explain">
+              <ol>
+                <li><code>with open(..., 'w') as f:</code>：ファイルを開いて <code>f</code> にファイルオブジェクトを割り当て、ブロック終了時に自動で閉じます。</li>
+                <li><code>f.write(...)</code>：ファイルに文字列を書き込みます（改行は自分で入れる）。</li>
+                <li><code>with open(..., 'r') as f:</code>：読み込みモードで開きます。</li>
+                <li><code>text = f.read()</code>：ファイルの全内容を文字列として読み込みます。大きなファイルは逐次処理を検討してください。</li>
+              </ol>
+            </div></details>
+            <div style="margin-top:0.8rem"><button class="copy-btn" data-target="code-file">コードをコピー</button></div>
+          </div>
+        </section>
+
+        <!-- oop -->
+        <section id="oop" class="section">
+          <h2 class="section-title">オブジェクト指向（徹底解説）</h2>
+          <div class="card">
+            <pre class="code" id="code-class">class Dog:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+    def bark(self):
+        return f"{self.name}: ワン！"
+
+# インスタンス化
+pochi = Dog('Pochi', 3)
+print(pochi.bark())
+print(pochi.age)</pre>
+
+            <details class="explain"><summary>詳しい行単位解説（クリックで展開）</summary>
+            <div class="explain">
+              <strong>概念（ざっくり）</strong>
+              <p>クラスは《設計図》、インスタンスは《その設計図から作られた具体物》です。属性はインスタンスごとのデータ、メソッドはそれに対する操作です。</p>
+
+              <strong>行ごとの解説</strong>
+              <ol>
+                <li><code>class Dog:</code>：Dog という名前のクラスを定義します。クラス名は慣習的に先頭大文字。</li>
+                <li><code>def __init__(self, name, age):</code>：コンストラクタ。インスタンス生成時に実行され、初期値を受け取ります。<code>self</code> はそのインスタンス自身を指します。</li>
+                <li><code>self.name = name</code>：インスタンスの属性 <code>name</code> に引数の値を保存します。異なるインスタンスがそれぞれ異なる属性値を持てます。</li>
+                <li><code>def bark(self):</code>：インスタンスメソッド。メソッドの第1引数は常に <code>self</code>（暗黙的にインスタンスが渡る）。</li>
+                <li><code>pochi = Dog('Pochi', 3)</code>：クラスからインスタンスを作る（インスタンス化）。この時点で <code>__init__</code> が実行され属性が設定されます。</li>
+                <li><code>pochi.bark()</code>：インスタンスのメソッドを呼び出します。内部で <code>self</code> は <code>pochi</code> を指します。</li>
+              </ol>
+              <p class="hint">Q&A: <strong>__init__ と self は何をしたいの？</strong><br>
+                - <code>__init__</code> は「そのインスタンスがどういうデータを持つべきか」を定義して初期化するための関数です。<br>
+                - <code>self</code> は「このメソッドを呼んでいるそのインスタンス」を表すための名前で、インスタンスごとの値（属性）を参照・更新するために必要です。</p>
+            </div></details>
+            <div style="margin-top:0.8rem"><button class="copy-btn" data-target="code-class">コードをコピー</button></div>
+          </div>
+        </section>
+
+        <!-- mini-project -->
+        <section id="mini-project" class="section">
+          <h2 class="section-title">ミニプロジェクト — 単語カウントツール</h2>
+          <div class="card">
+            <pre class="code" id="code-project">def word_count(text):
+    words = text.split()
+    counts = {}
+    for w in words:
+        w = w.strip().lower()
+        counts[w] = counts.get(w, 0) + 1
+    return counts
+
+if __name__ == '__main__':
+    sample = 'Python is great. Python is easy.'
+    print(word_count(sample))</pre>
+
+            <details class="explain"><summary>詳しい行単位解説（クリックで展開）</summary>
+            <div class="explain">
+              <strong>行ごとの解説</strong>
+              <ol>
+                <li><code>def word_count(text):</code>：関数定義。テキストを渡して解析結果を返します。</li>
+                <li><code>words = text.split()</code>：空白で分割して単語リストを作る。句読点は残るので必要なら前処理が必要。</li>
+                <li><code>counts = {}</code>：単語と出現回数を保存する辞書を作る。</li>
+                <li><code>for w in words:</code>：各単語を順に処理。</li>
+                <li><code>w = w.strip().lower()</code>：空白を取り、すべて小文字にして同一視しやすくする。</li>
+                <li><code>counts[w] = counts.get(w, 0) + 1</code>：現在の値（無ければ 0）を取得して +1 する。get の便利さが分かります。</li>
+                <li><code>if __name__ == '__main__':</code>：このファイルが直接実行されたときだけテストコードを実行するための慣習です。</li>
+              </ol>
+            </div></details>
+            <div style="margin-top:0.8rem"><button class="copy-btn" data-target="code-project">コードをコピー</button></div>
+          </div>
+        </section>
+
+        <footer style="margin-top:1.2rem;color:var(--muted);text-align:center;padding-bottom:2rem;margin-bottom:2rem;" class="small">&copy; 2025 Wakuwaku of the Future Lab. All Rights Reserved.<br>
+      本アプリは学習・運用目的で提供されています。</footer>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // TOC smooth scroll + active state
+    const tocLinks = document.querySelectorAll('.nav-menu a');
+    tocLinks.forEach(a=>{ a.addEventListener('click', e=>{ if(a.hash){ e.preventDefault(); document.querySelector(a.hash).scrollIntoView({behavior:'smooth', block:'start'}); } }); });
+
+    function updateTOC(){
+      let current='';
+      // 概要ヘッダーもチェック対象に含める
+      const overviewHeader = document.getElementById('overview');
+      if (overviewHeader && overviewHeader.getBoundingClientRect().top <= 120) {
+        current = 'overview';
+      }
+      
+      document.querySelectorAll('main .section').forEach(sec=>{ const r = sec.getBoundingClientRect(); if(r.top <= 120) current = sec.id; });
+      tocLinks.forEach(a=>{ a.classList.toggle('active', a.getAttribute('href') === '#'+current); });
+    }
+    window.addEventListener('scroll', updateTOC); window.addEventListener('load', updateTOC);
+
+    // Copy buttons
+    document.querySelectorAll('.copy-btn').forEach(btn=>{
+      btn.addEventListener('click', async ()=>{
+        const id = btn.getAttribute('data-target');
+        const el = document.getElementById(id);
+        try{ await navigator.clipboard.writeText(el.innerText); const prev = btn.textContent; btn.textContent='コピー済み'; setTimeout(()=>btn.textContent=prev,900);}catch(e){alert('コピーに失敗しました。手動で選択してください。');}
+      });
+    });
+  </script>
+</body>
+</html>
