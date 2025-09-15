@@ -83,25 +83,25 @@
     /* 視認性のための小要素 */
     .note{font-size:0.95rem;color:#173147;margin-top:0.6rem}
 
+    /* レスポンシブ：スマホ幅 */
     @media (max-width: 1024px) {
       .container {
-        flex-direction: column;
+        flex-direction: column; /* 縦並びに */
+        gap: 1rem;
       }
 
-      .sidebar {
-        width: 100%;
+      .sidebar,
+      main {
+        width: 100%; /* サイドバーも本文も幅を揃える */
+        max-width: 100%;
         position: relative;
-        border-left: 6px solid var(--accent-blue);
-        border-radius: 8px;
-        margin-bottom: 1rem;
+        top: auto;
       }
 
       .content-inner {
-        max-width: 100%;  /* ← これを追加 */
-        padding: 0 1rem;  /* ← スマホ用に左右余白を確保 */
+        padding: 0 1rem; /* サイドバーと同じ左右余白 */
       }
     }
-
   </style>
 </head>
 <body>
