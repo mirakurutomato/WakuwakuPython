@@ -70,9 +70,9 @@
 
     /* コード */
     details.explain{margin-top:0.6rem}
-details.explain summary{font-weight:600;cursor:pointer;padding:0.45rem;border-radius:6px;background:transparent}
-details.explain[open] summary{background:rgba(12,91,122,0.04)}
-details.explain p{margin-top:0.5rem;color:#073347;line-height:1.6}
+    details.explain summary{font-weight:600;cursor:pointer;padding:0.45rem;border-radius:6px;background:transparent}
+    details.explain[open] summary{background:rgba(12,91,122,0.04)}
+    details.explain p{margin-top:0.5rem;color:#073347;line-height:1.6}
 
     .code{background:var(--code-bg);color:#ffffff;padding:1rem;border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:0.95rem;white-space:pre;overflow:auto;border:1px solid rgba(255,255,255,0.03)}
     .code + .explain{margin-top:0.8rem}
@@ -83,11 +83,23 @@ details.explain p{margin-top:0.5rem;color:#073347;line-height:1.6}
     /* 視認性のための小要素 */
     .note{font-size:0.95rem;color:#173147;margin-top:0.6rem}
 
-    /* レスポンシブ */
-    @media (max-width: 1024px){
-      .container{flex-direction:column}
-      .sidebar{width:100%;position:relative;border-left:6px solid var(--accent-blue);border-radius:8px;margin-bottom:1rem}
-      .content-inner{padding:0}
+    @media (max-width: 1024px) {
+      .container {
+        flex-direction: column;
+      }
+
+      .sidebar {
+        width: 100%;
+        position: relative;
+        border-left: 6px solid var(--accent-blue);
+        border-radius: 8px;
+        margin-bottom: 1rem;
+      }
+
+      .content-inner {
+        max-width: 100%;  /* ← これを追加 */
+        padding: 0 1rem;  /* ← スマホ用に左右余白を確保 */
+      }
     }
 
   </style>
@@ -114,9 +126,9 @@ details.explain p{margin-top:0.5rem;color:#073347;line-height:1.6}
           <li><a href="#io">入力と出力</a></li>
           <li><a href="#operators">演算・比較・論理</a></li>
           <li><a href="#control">条件分岐とループ</a></li>
-          <li><a href="#functions">関数</a></li>
-          <li><a href="#collections">リスト・タプル・辞書・集合</a></li>
-          <li><a href="#modules">モジュールと標準ライブラリ</a></li>
+          <li><a href="#functions">関数（詳解）</a></li>
+          <li><a href="#collections">コレクション</a></li>
+          <li><a href="#modules">モジュール</a></li>
           <li><a href="#fileio">ファイル入出力</a></li>
           <li><a href="#oop">オブジェクト指向</a></li>
           <li><a href="#mini-project">ミニプロジェクト</a></li>
@@ -541,4 +553,3 @@ if __name__ == '__main__':
   </script>
 </body>
 </html>
-
